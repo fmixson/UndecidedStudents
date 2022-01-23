@@ -2,6 +2,8 @@ import pandas as pd
 import openpyxl
 import xlrd
 import easygui
+from pathlib import Path
+
 
 
 pd.set_option('display.max_columns', None)
@@ -18,12 +20,12 @@ for i in range(len(currentUndecidedFileDF)-1):
         if currentUndecidedFileDF.loc[i, 'Employee ID'] == newUndecidedFileDF.loc[j, 'Employee ID']:
             remainingUndedecided.append(i)
 
-print(remainingUndedecided)
-droppedUndecidedStudents = newUndecidedFileDF.drop(remainingUndedecided)
-print(droppedUndecidedStudents)
-writer = pd.ExcelWriter('droppedUndecidedStudents.xlsx', engine='xlsxwriter')
-droppedUndecidedStudents.to_excel(writer, sheet_name='Dropped')
-writer.save()
+# print(remainingUndedecided)
+# droppedUndecidedStudents = newUndecidedFileDF.drop(remainingUndedecided)
+# print(droppedUndecidedStudents)
+# writer = pd.ExcelWriter('droppedUndecidedStudents.xlsx', engine='xlsxwriter')
+# droppedUndecidedStudents.to_excel(writer, sheet_name='Dropped')
+# writer.save()
 
 currentUndecided = []
 for i in range(len(newUndecidedFileDF)):
@@ -34,6 +36,13 @@ newUndecidedDF = newUndecidedFileDF.drop(currentUndecided)
 writer2 = pd.ExcelWriter('NewUndecided.xlsx', engine='xlsxwriter')
 newUndecidedDF.to_excel(writer2, sheet_name='NewUndecided')
 writer2.save()
+
+home = Path.home()
+saveUndecidedFile = Path(home, 'Desktop', 'NewUndecided.xlsx')
+newUndecidedDF.to_excel(saveUndecidedFile)
+
+saveCurrentUndecidedFile = Path(home, 'DeskTop', 'Current_Undecided_Students.xlsx')
+newUndecidedFileDF.to_excel(saveCurrentUndecidedFile)
             # print(newUndecidedFileDF.loci[j-1, 'Employee ID'])
 # xlsxFile = pd.ExcelFile('newUndecidedFile')
 # undecidedDF = pd.read_excel(xlsxFile, 'Undecided Units')
